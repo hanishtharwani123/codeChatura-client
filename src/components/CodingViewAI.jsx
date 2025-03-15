@@ -15,6 +15,7 @@ import {
   FaUnlock,
   FaExclamationTriangle,
 } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
 import baseUrl from "../../baseUrl";
 
 const ChallengeView = () => {
@@ -53,43 +54,6 @@ const ChallengeView = () => {
     setTimeout(() => {
       setCopiedTestCase(null);
     }, 2000);
-  };
-
-  // Add this function to your component file to handle code formatting
-  const formatWithCodeBlocks = (text) => {
-    if (!text) return "";
-
-    // First, handle multi-line code blocks (```code```)
-    let formattedText = text.replace(
-      /```([^`]*?)```/gs,
-      (match, codeContent) => {
-        return `<pre class="bg-gray-100 p-3 rounded-md my-3 text-sm overflow-x-auto">${escapeHtml(
-          codeContent.trim()
-        )}</pre>`;
-      }
-    );
-
-    // Then, handle inline code (`code`)
-    formattedText = formattedText.replace(
-      /`([^`]+?)`/g,
-      (match, codeContent) => {
-        return `<code class="bg-gray-100 px-1 py-0.5 rounded text-pink-600 font-mono text-sm">${escapeHtml(
-          codeContent
-        )}</code>`;
-      }
-    );
-
-    return formattedText;
-  };
-
-  // Helper function to escape HTML special characters
-  const escapeHtml = (unsafe) => {
-    return unsafe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   };
 
   if (loading) {
@@ -251,21 +215,15 @@ const ChallengeView = () => {
                   </div>
 
                   {/* Tab Content */}
-                  {/* Tab Content */}
                   <div className="p-4 sm:p-6">
                     {activeTab === "description" && (
                       <div>
                         {/* Description */}
                         <div className="mb-6 sm:mb-8">
                           <div className="prose prose-green max-w-none">
-                            <div
-                              className="whitespace-pre-line"
-                              dangerouslySetInnerHTML={{
-                                __html: formatWithCodeBlocks(
-                                  challenge.description
-                                ),
-                              }}
-                            />
+                            <ReactMarkdown>
+                              {challenge.description}
+                            </ReactMarkdown>
                           </div>
                         </div>
 
@@ -275,14 +233,9 @@ const ChallengeView = () => {
                             Input Format
                           </h2>
                           <div className="prose prose-green max-w-none text-gray-700">
-                            <div
-                              className="whitespace-pre-line"
-                              dangerouslySetInnerHTML={{
-                                __html: formatWithCodeBlocks(
-                                  challenge.inputFormat
-                                ),
-                              }}
-                            />
+                            <ReactMarkdown>
+                              {challenge.inputFormat}
+                            </ReactMarkdown>
                           </div>
                         </div>
 
@@ -292,14 +245,9 @@ const ChallengeView = () => {
                             Output Format
                           </h2>
                           <div className="prose prose-green max-w-none text-gray-700">
-                            <div
-                              className="whitespace-pre-line"
-                              dangerouslySetInnerHTML={{
-                                __html: formatWithCodeBlocks(
-                                  challenge.outputFormat
-                                ),
-                              }}
-                            />
+                            <ReactMarkdown>
+                              {challenge.outputFormat}
+                            </ReactMarkdown>
                           </div>
                         </div>
 
@@ -309,14 +257,9 @@ const ChallengeView = () => {
                             Constraints
                           </h2>
                           <div className="prose prose-green max-w-none text-gray-700">
-                            <div
-                              className="whitespace-pre-line"
-                              dangerouslySetInnerHTML={{
-                                __html: formatWithCodeBlocks(
-                                  challenge.constraints
-                                ),
-                              }}
-                            />
+                            <ReactMarkdown>
+                              {challenge.constraints}
+                            </ReactMarkdown>
                           </div>
                         </div>
                       </div>
@@ -539,14 +482,9 @@ const ChallengeView = () => {
                           </div>
                           {showHint && (
                             <div className="mt-4 prose prose-green max-w-none text-sm sm:text-base">
-                              <div
-                                className="whitespace-pre-line"
-                                dangerouslySetInnerHTML={{
-                                  __html: formatWithCodeBlocks(
-                                    challenge.explanation
-                                  ),
-                                }}
-                              />
+                              <ReactMarkdown>
+                                {challenge.explanation}
+                              </ReactMarkdown>
                             </div>
                           )}
                         </div>
