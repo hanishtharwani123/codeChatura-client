@@ -6,30 +6,33 @@ import {
   FaListOl,
   FaBars,
   FaTimes,
+  FaEye, // Added new icon import
 } from "react-icons/fa";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation(); // Get current route
+  const location = useLocation();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Highlight "Coding with AI" for /coding-with-ai or /view-ai-coding
   const isCodingWithAIActive =
     location.pathname === "/coding-with-ai" ||
     location.pathname === "/view-ai-coding";
 
-  // Highlight "MCQ with AI" for /mcq-with-ai
   const isMCQWithAIActive =
     location.pathname === "/mcq-with-ai" ||
     location.pathname === "/mcq-with-ai/:id";
+
+  const isViewProblemsActive = location.pathname === "/view-problem-mcq";
 
   return (
     <nav className="bg-white shadow-md py-4 px-4 md:px-6">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2 text-green-600 font-bold text-xl">
-          <FaGraduationCap className="text-2xl" />
-          <span className="font-extrabold tracking-tight">CodeChatura</span>
+          <Link to="/" className="flex items-center space-x-2">
+            <FaGraduationCap className="text-2xl" />
+            <span className="font-extrabold tracking-tight">CodeChatura</span>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -71,16 +74,15 @@ const Navbar = () => {
             <span>MCQ with AI</span>
           </Link>
           <Link
-            to="/resources"
-            className="hover:text-green-600 transition duration-300 font-medium"
+            to="/view-problem-mcq"
+            className={`hover:text-green-600 transition duration-300 flex items-center space-x-1 font-medium ${
+              isViewProblemsActive
+                ? "text-green-600 border-b-2 border-green-600"
+                : ""
+            }`}
           >
-            Resources
-          </Link>
-          <Link
-            to="/about"
-            className="hover:text-green-600 transition duration-300 font-medium"
-          >
-            About
+            <FaEye /> {/* Changed icon here */}
+            <span>View Problems</span>
           </Link>
         </div>
       </div>
@@ -108,6 +110,16 @@ const Navbar = () => {
             >
               <FaListOl />
               <span>MCQ with AI</span>
+            </Link>
+            <Link
+              to="/view-problem-mcq"
+              className={`hover:text-green-600 transition duration-300 flex items-center space-x-2 py-2 px-4 hover:bg-green-50 rounded-md ${
+                isViewProblemsActive ? "text-green-600 bg-green-50" : ""
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <FaEye /> {/* Changed icon here */}
+              <span>View Problems</span>
             </Link>
             <Link
               to="/resources"

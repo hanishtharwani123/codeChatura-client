@@ -263,10 +263,10 @@ const HomePage = () => {
                 </li>
                 <li>
                   <Link
-                    to="#"
+                    to="/view-problem-mcq"
                     className="text-gray-300 hover:text-white transition"
                   >
-                    Practice Mode
+                    View Problems
                   </Link>
                 </li>
               </ul>

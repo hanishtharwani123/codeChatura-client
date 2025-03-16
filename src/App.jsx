@@ -12,28 +12,48 @@ import CodingWithAI from "./components/CodingWithAI"; // Example
 import CodingViewAI from "./components/CodingViewAI"; // Example
 import MCQWithAI from "./components/MCQWithAI"; // Example
 import MCQViewAI from "./components/MCQViewAI";
+import ViewProblemMCQ from "./components/ViewProblem&MCQ";
 import NotFound from "./components/NotFound";
 
 // Wrapper component to conditionally render Navbar and Footer
 const Layout = ({ children }) => {
   const location = useLocation();
+  const path = location.pathname;
+
+  // Pages that should have neither navbar nor footer
+  const fullscreenPages = ["/mcq-with-ai/", "/view-ai-coding/"];
+
+  // Check if current path starts with any fullscreen page path
+  const isFullscreenPage = fullscreenPages.some(
+    (route) => path.startsWith(route) && path.length > route.length
+  );
+
+  // Only show NotFound for unmatched routes
   const isNotFound =
     location.pathname === "*" ||
     ![
       "/",
       "/coding-with-ai",
-      "/view-ai-coding",
+      "/view-ai-coding/:id",
       "/mcq-with-ai",
       "/mcq-with-ai/:id",
-    ].includes(location.pathname);
+      "/view-problem-mcq", // Added this route
+      // Add other valid routes here if needed
+    ].some((route) =>
+      route.includes(":id")
+        ? new RegExp(`^${route.replace(":id", "[^/]+")}$`).test(path)
+        : route === path
+    );
 
   return (
     <>
-      {/* Show Navbar on all pages except Not Found */}
-      {!isNotFound && <Navbar />}
+      {/* Show Navbar except on fullscreen pages and Not Found */}
+      {!isFullscreenPage && !isNotFound && <Navbar />}
+
       <main>{children}</main>
-      {/* Show Footer on all pages except Home and Not Found */}
-      {location.pathname !== "/" && !isNotFound && <Footer />}
+
+      {/* Show Footer except on Home, fullscreen pages, and Not Found */}
+      {path !== "/" && !isFullscreenPage && !isNotFound && <Footer />}
     </>
   );
 };
@@ -62,9 +82,7 @@ const App = () => {
                 <Route path="/view-ai-coding/:id" element={<CodingViewAI />} />
                 <Route path="/mcq-with-ai" element={<MCQWithAI />} />
                 <Route path="/mcq-with-ai/:id" element={<MCQViewAI />} />
-                {/* Add more routes here if needed */}
-                {/* <Route path="/resources" element={<Resources />} />
-                <Route path="/about" element={<About />} /> */}
+                <Route path="/view-problem-mcq" element={<ViewProblemMCQ />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
